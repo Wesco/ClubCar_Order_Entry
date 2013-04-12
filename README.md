@@ -1,4 +1,4 @@
-ClubCar_EDI_Order
+ClubCar Order Entry
 =================
 
-Club Car EDI Order Converter
+Club Car Order Entry Macro
