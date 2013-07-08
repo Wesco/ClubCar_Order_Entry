@@ -115,7 +115,7 @@ Sub Email(SendTo As String, Optional CC As String, Optional BCC As String, Optio
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Proc  : Function ImpotGaps
+' Proc  : Function ImportGaps
 ' Date  : 12/12/2012
 ' Desc  : Imports gaps to the workbook containing this macro. Returns true upon success.
 ' Ex    : ImportGaps
@@ -134,7 +134,7 @@ Function ImportGaps() As Boolean
     StartTime = Timer
     dt = Date - iCounter
     sPath = "\\br3615gaps\gaps\3615 Gaps Download\" & Format(dt, "yyyy") & "\"
-    sName = "3615 " & Format(dt, "m-dd-yy") & ".xlsx"
+    sName = "3615 " & Format(dt, "yyyy-mm-dd") & ".xlsx"
 
     'This error is bypassed so you can determine whether or not the sheet exists
     On Error Resume Next
@@ -149,7 +149,7 @@ Function ImportGaps() As Boolean
         iCounter = iCounter + 1
         dt = Date - iCounter
         sPath = "\\br3615gaps\gaps\3615 Gaps Download\" & Format(dt, "yyyy") & "\"
-        sName = "3615 " & Format(dt, "m-dd-yy") & ".xlsx"
+        sName = "3615 " & Format(dt, "yyyy-mm-dd") & ".xlsx"
         If iCounter = 15 Then
             Exit Do
         End If
