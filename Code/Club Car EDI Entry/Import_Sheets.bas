@@ -4,6 +4,8 @@ Option Explicit
 Function ImportSheets() As Boolean
     Dim sPath As String
     Dim StartTime As Double
+    Dim TotalRows As Long
+    Dim TotalCols As Integer
 
     Application.DisplayAlerts = False
     Application.AskToUpdateLinks = False
@@ -14,16 +16,28 @@ Function ImportSheets() As Boolean
     If sPath <> "False" Then
         Workbooks.Open sPath
         Sheets("AWD").Select
-        ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("AWD Drop In").Range("A1")
+        UnhideData
+        TotalRows = Rows(Rows.Count).End(xlUp).Row
+        TotalCols = Columns(Columns.Count).End(xlToLeft).Column
+        Range(Cells(1, 1), Cells(TotalRows, TotalCols)).Copy Destination:=ThisWorkbook.Sheets("AWD Drop In").Range("A1")
 
         Sheets("DS").Select
-        ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("DS Drop In").Range("A1")
+        UnhideData
+        TotalRows = Rows(Rows.Count).End(xlUp).Row
+        TotalCols = Columns(Columns.Count).End(xlToLeft).Column
+        Range(Cells(1, 1), Cells(TotalRows, TotalCols)).Copy Destination:=ThisWorkbook.Sheets("DS Drop In").Range("A1")
 
         Sheets("Prec Cpl").Select
-        ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("PREC Drop In").Range("A1")
+        UnhideData
+        TotalRows = Rows(Rows.Count).End(xlUp).Row
+        TotalCols = Columns(Columns.Count).End(xlToLeft).Column
+        Range(Cells(1, 1), Cells(TotalRows, TotalCols)).Copy Destination:=ThisWorkbook.Sheets("PREC Drop In").Range("A1")
 
         Sheets("Util Cpl").Select
-        ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("UTIL Drop In").Range("A1")
+        UnhideData
+        TotalRows = Rows(Rows.Count).End(xlUp).Row
+        TotalCols = Columns(Columns.Count).End(xlToLeft).Column
+        Range(Cells(1, 1), Cells(TotalRows, TotalCols)).Copy Destination:=ThisWorkbook.Sheets("UTIL Drop In").Range("A1")
 
         ActiveWorkbook.Close
 
@@ -47,14 +61,16 @@ End Function
 Sub ImportMaster()
     Dim sPath As String
     sPath = "\\br3615gaps\gaps\Club Car\Master\Club Car Master " & Format(Date, "yyyy") & ".xlsx"
-    
+
     Workbooks.Open sPath
     ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("Master").Range("A1")
     ActiveWorkbook.Close
 End Sub
 
-
-
+Sub UnhideData()
+    Columns.Hidden = False
+    Columns.AutoFit
+End Sub
 
 
 
