@@ -64,11 +64,11 @@ Sub SetupEDI(PO As String, ShipTo As String)
 
     Range(Cells(2, 12), Cells(iRows, 12)).Value = ShipTo    'Column L
 
-    Range("M2").Formula = "=IFERROR(VLOOKUP(H2,Master!B:D,3,FALSE),"""")"
-    Range("M2").AutoFill Destination:=Range(Cells(2, 13), Cells(iRows, 13))
+    'Bin Size
+    Range(Cells(2, 13), Cells(iRows, 13)).Formula = "=""Bin Size: "" & IFERROR(VLOOKUP(H2,Master!B:D,3,FALSE),"""")"
 
-    Range("N2").Formula = "=IFERROR(VLOOKUP(H2,Master!B:E,4,FALSE),"""")"
-    Range("N2").AutoFill Destination:=Range(Cells(2, 14), Cells(iRows, 14))
+    'Qty Per Bin
+    Range(Cells(2, 14), Cells(iRows, 14)).Formula = "=""Qty Per Bin: "" & IFERROR(VLOOKUP(H2,Master!B:E,4,FALSE),"""")"
 
     i = 1
     Do While i < ActiveSheet.UsedRange.Rows.Count

@@ -62,9 +62,28 @@ Sub ImportMaster()
     Dim sPath As String
     sPath = "\\br3615gaps\gaps\Club Car\Master\Club Car Master " & Format(Date, "yyyy") & ".xlsx"
 
+    On Error GoTo ERROR_HANDLER
     Workbooks.Open sPath
     ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("Master").Range("A1")
     ActiveWorkbook.Close
+    Exit Sub
+
+ERROR_HANDLER:
+    Err.Raise Err.Number, "ImportMaster", Err.Description
+End Sub
+
+Sub ImportBlanket()
+    Dim Path As String
+    Path = "\\br3615gaps\gaps\Club Car\Blanket\Blanket " & Format(Date, "yyyy") & ".xlsx"
+
+    On Error GoTo ERROR_HANDLER
+    Workbooks.Open Path
+    ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("Blanket").Range("A1")
+    ActiveWorkbook.Close
+    Exit Sub
+
+ERROR_HANDLER:
+    Err.Raise Err.Number, "ImportBlanket", Err.Description
 End Sub
 
 Sub UnhideData()

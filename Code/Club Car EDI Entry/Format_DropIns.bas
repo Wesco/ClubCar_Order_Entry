@@ -2,12 +2,10 @@ Attribute VB_Name = "Format_DropIns"
 Option Explicit
 
 Sub FixDropIns()
-    Dim StartTime As Double
     Dim aSheets As Variant
     Dim aHeaders As Variant
     Dim s As Variant
 
-    StartTime = Timer
     aSheets = Array("AWD Drop In", "DS Drop In", "PREC Drop In", "UTIL Drop In")
 
     For Each s In aSheets
@@ -18,10 +16,6 @@ Sub FixDropIns()
         RemItmNOO   'Removes items not ordered
         ActiveSheet.UsedRange.Value = ActiveSheet.UsedRange.Value
     Next
-    
-    Sheets("Info").Select
-    Cells(ActiveSheet.UsedRange.Rows.Count + 1, 1).Value = "FixDropIns"
-    Cells(ActiveSheet.UsedRange.Rows.Count, 3).Value = Timer - StartTime
 End Sub
 
 Sub FormatData()

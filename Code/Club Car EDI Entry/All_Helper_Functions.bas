@@ -115,12 +115,12 @@ Sub Email(SendTo As String, Optional CC As String, Optional BCC As String, Optio
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Proc  : Function ImportGaps
+' Proc  : Sub ImportGaps
 ' Date  : 12/12/2012
-' Desc  : Imports gaps to the workbook containing this macro. Returns true upon success.
+' Desc  : Imports gaps to the workbook containing this macro.
 ' Ex    : ImportGaps
 '---------------------------------------------------------------------------------------
-Function ImportGaps() As Boolean
+Sub ImportGaps()
     Dim sPath As String     'Gaps file path
     Dim sName As String     'Gaps Sheet Name
     Dim iCounter As Long    'Counter to decrement the date
@@ -128,35 +128,32 @@ Function ImportGaps() As Boolean
     Dim dt As Date          'Date for gaps file name and path
     Dim Result As VbMsgBoxResult    'Yes/No to proceed with old gaps file if current one isn't found
     Dim Gaps As Worksheet           'The sheet named gaps if it exists, else this = nothing
-    Dim Info As Worksheet           'The sheet named Info if it exists, else this = nothing
-    Dim StartTime As Double     'The time this function was started
+    Dim StartTime As Double         'The time this function was started
+    Dim FileFound As Boolean        'Indicates whether or not gaps was found
 
     StartTime = Timer
-    dt = Date - iCounter
-    sPath = "\\br3615gaps\gaps\3615 Gaps Download\" & Format(dt, "yyyy") & "\"
-    sName = "3615 " & Format(dt, "yyyy-mm-dd") & ".xlsx"
+    FileFound = False
 
     'This error is bypassed so you can determine whether or not the sheet exists
-    On Error Resume Next
+    On Error GoTo CREATE_GAPS
     Set Gaps = ThisWorkbook.Sheets("Gaps")
-    Set Info = ThisWorkbook.Sheets("Info")
     On Error GoTo 0
 
     Application.DisplayAlerts = False
 
     'Find gaps
-    Do While FileExists(sPath & sName) = False
-        iCounter = iCounter + 1
+    For iCounter = 0 To 15
         dt = Date - iCounter
         sPath = "\\br3615gaps\gaps\3615 Gaps Download\" & Format(dt, "yyyy") & "\"
         sName = "3615 " & Format(dt, "yyyy-mm-dd") & ".xlsx"
-        If iCounter = 15 Then
-            Exit Do
+        If FileExists(sPath & sName) Then
+            FileFound = True
+            Exit For
         End If
-    Loop
+    Next
 
-    'Make sure Gaps file exists because a search was only done for up to 15 days back
-    If FileExists(sPath & sName) = True Then
+    'Make sure Gaps file was found
+    If FileFound = True Then
         If dt <> Date Then
             Result = MsgBox( _
                      Prompt:="Gaps from " & Format(dt, "mmm dd, yyyy") & " was found." & vbCrLf & "Would you like to continue?", _
@@ -165,19 +162,9 @@ Function ImportGaps() As Boolean
         End If
 
         If Result <> vbNo Then
-
-            'Check to see if the needed sheets exist
-            'if they do not, then create them
-            On Error Resume Next    'Ignore errors because if the sheet doesn't exist it is created
-            If Gaps.Name <> "Gaps" Then
-                ThisWorkbook.Sheets.Add After:=Sheets(ThisWorkbook.Sheets.Count)
-                ActiveSheet.Name = "Gaps"
+            If ThisWorkbook.Sheets("Gaps").Range("A1").Value <> "" Then
+                Gaps.Cells.Delete
             End If
-            If Info.Name <> "Info" Then
-                ThisWorkbook.Sheets.Add After:=Sheets(ThisWorkbook.Sheets.Count)
-                ActiveSheet.Name = "Info"
-            End If
-            On Error GoTo 0
 
             Workbooks.Open sPath & sName
             ActiveSheet.UsedRange.Copy Destination:=ThisWorkbook.Sheets("Gaps").Range("A1")
@@ -189,37 +176,25 @@ Function ImportGaps() As Boolean
             Range("A1").Value = "SIM"
             Range("A2").Formula = "=C2&D2"
             Range("A2").AutoFill Destination:=Range(Cells(2, 1), Cells(iRows, 1))
-            Range(Cells(2, 1), Cells(iRows, 1)).Value = Range(Cells(2, 1), Cells(iRows, 1)).Value
-
-            Sheets("Info").Select
-            Range("A1").Value = "Function"
-            Range("A2").Value = "Gaps"
-            Range("B1").Value = "Date"
-            Range("B2").Value = Format(dt, "mm/dd/yy")
-            Range("C1").Value = "Run Time"
-            Range("C2").Value = Timer - StartTime
-            ActiveSheet.Columns.EntireColumn.AutoFit
-
-            ImportGaps = True
+            With Range(Cells(2, 1), Cells(iRows, 1))
+                .NumberFormat = "@"
+                .Value = .Value
+            End With
         Else
-            Sheets("Info").Select
-            Range("A1").Value = "Function"
-            Range("A2").Value = "Gaps"
-            Range("B1").Value = "Date"
-            Range("B2").Value = Format(dt, "mm/dd/yy")
-            Range("C1").Value = "Run Time"
-            Range("C2").Value = "Failed"
-            ActiveSheet.Columns.EntireColumn.AutoFit
-            ImportGaps = False
+            Err.Raise 18, "ImportGaps", "Import canceled."
         End If
-
     Else
-        MsgBox Prompt:="Gaps could not be found.", Title:="Gaps not found"
-        ImportGaps = False
+        Err.Raise 53, "ImportGaps", "Gaps could not be found."
     End If
 
     Application.DisplayAlerts = True
-End Function
+    Exit Sub
+
+CREATE_GAPS:
+    ThisWorkbook.Sheets.Add After:=Sheets(ThisWorkbook.Sheets.Count)
+    ActiveSheet.Name = "Gaps"
+    Resume
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : FilterSheet
@@ -274,43 +249,37 @@ End Sub
 ' Date : 1/29/2013
 ' Desc : Prompts the user to select a file for import
 '---------------------------------------------------------------------------------------
-Sub UserImportFile(DestRange As Range)
-    Dim StartTime As Double         'The time this function was started
+Sub UserImportFile(DestRange As Range, Optional DelFile As Boolean = False, Optional ShowAllData As Boolean = False, Optional SourceSheet As String = "")
     Dim File As String              'Full path to user selected file
     Dim FileDate As String          'Date the file was last modified
     Dim OldDispAlert As Boolean     'Original state of Application.DisplayAlerts
 
     OldDispAlert = Application.DisplayAlerts
-    StartTime = Timer
     File = Application.GetOpenFilename()
 
     Application.DisplayAlerts = False
     If File <> "False" Then
         FileDate = Format(FileDateTime(File), "mm/dd/yy")
         Workbooks.Open File
-
-        ActiveSheet.UsedRange.Copy Destination:=DestRange
+        If SourceSheet = "" Then SourceSheet = ActiveSheet.Name
+        If ShowAllData = True Then
+            On Error Resume Next
+            ActiveSheet.AutoFilter.ShowAllData
+            ActiveSheet.UsedRange.Columns.Hidden = False
+            ActiveSheet.UsedRange.Rows.Hidden = False
+            On Error GoTo 0
+        End If
+        Sheets(SourceSheet).UsedRange.Copy Destination:=DestRange
         ActiveWorkbook.Close
         ThisWorkbook.Activate
 
-        FillInfo FunctionName:="UserImportFile", _
-                 Parameters:="FileName: " & File, _
-                 FileDate:=FileDate, _
-                 ExecutionTime:=Timer - StartTime, _
-                 Result:="Complete"
-
-        FillInfo FunctionName:="", _
-                 Parameters:="DestRange: " & DestRange.Address(False, False), _
-                 Result:="Complete"
+        If DelFile = True Then
+            DeleteFile File
+        End If
     Else
-        FillInfo FunctionName:="UserImportFile", _
-                 Parameters:="DestRange: " & DestRange.Address(False, False), _
-                 ExecutionTime:=Timer - StartTime, _
-                 Result:="Failed - User Aborted"
-        Sheets("Info").Select
         Err.Raise 18
     End If
-
+    Application.DisplayAlerts = OldDispAlert
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -368,10 +337,10 @@ Sub ExportCode()
     Dim comp As Variant
     Dim codeFolder As String
     Dim FileName As String
-    
+
     AddReferences
     codeFolder = CombinePaths(GetWorkbookPath, "Code\" & Left(ThisWorkbook.Name, Len(ThisWorkbook.Name) - 5))
-    
+
     On Error Resume Next
     RecMkDir codeFolder
     On Error GoTo 0
