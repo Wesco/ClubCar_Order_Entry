@@ -1,37 +1,8 @@
 Attribute VB_Name = "Program"
 Option Explicit
 
-Sub Macro1()
-    Dim Result As Boolean
-    Application.ScreenUpdating = False
-
-    On Error GoTo IMPORT_FAILED
-    ImportGaps
-    ImportMaster
-    ImportBlanket
+Sub Main()
     
-    On Error GoTo USER_ABORTED
-    ImportSheets
-    On Error GoTo 0
-    
-    FixDropIns
-    FilterRejects
-    CreateEDI
-    SaveEdiCsv
-    CleanUp
-
-    Application.ScreenUpdating = True
-    Exit Sub
-
-USER_ABORTED:
-    CleanUp
-    MsgBox "User canceled, macro aborted!", vbOKOnly, "User Aborted"
-    Exit Sub
-
-IMPORT_FAILED:
-    CleanUp
-    MsgBox Err.Description, vbOKOnly, Err.Source
-    Exit Sub
 End Sub
 
 Sub CleanUp()
