@@ -2,23 +2,24 @@ Attribute VB_Name = "Program"
 Option Explicit
 
 Sub Main()
-    
+
 End Sub
 
-Sub CleanUp()
+Sub Clean()
     Dim aSheets As Variant
-    Dim s As Variant
+    Dim s As Worksheet
 
-    aSheets = Array("AWD Drop In", "DS Drop In", "PREC Drop In", "UTIL Drop In", _
-                    "Gaps", "Info", "Not On Blanket", "Not On Master", "Blanket", "Master")
+    ThisWorkbook.Activate
 
-    On Error Resume Next
-    For Each s In aSheets
-        Sheets(s).Select
-        ActiveSheet.Cells.Delete
-        Range("A1").Select
+    For Each s In ThisWorkbook.Sheets
+        If s.Name <> "Macro" Then
+            s.Select
+            s.AutoFilterMode = False
+            Cells.Delete
+            Range("A1").Select
+        End If
     Next
-    On Error GoTo 0
 
     Sheets("Macro").Select
+    Range("C7").Select
 End Sub
