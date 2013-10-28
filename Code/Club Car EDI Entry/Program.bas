@@ -10,11 +10,13 @@ Sub Main()
     'any data that was created at run-time
     On Error GoTo Import_Error
     ImportGaps
+    ImportBlanket
+    ImportMaster
     
     UserImportFile Sheets("JIT Report").Range("A1")
     FormatJitReport
     
-    CreateJitPivot
+    CreateJitPiv
     FormatJitPiv
     
     
