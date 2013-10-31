@@ -45,17 +45,3 @@ Sub ExportRemovedItems()
     ActiveWorkbook.Close
     Application.DisplayAlerts = PrevDispAlert
 End Sub
-
-
-
-
-
-
-
-
-
-
-
-
-
-

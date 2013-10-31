@@ -97,13 +97,12 @@ Sub CreateEDIOrd()
 
     'Unit Price
     Range("G2:G" & TotalRows).Formula = "=IFERROR(VLOOKUP(I2,Master!A:C,3,FALSE),0)"
-    Range("G2:G" & TotalRows).NumberFormat = "0.00"
     Range("G2:G" & TotalRows).Value = Range("G2:G" & TotalRows).Value
 
     'SIM
     Range("H2:H" & TotalRows).Formula = "=IFERROR(VLOOKUP(I2,Master!A:B,2,FALSE),"""")"
-    Range("H2:H" & TotalRows).NumberFormat = "@"
     Range("H2:H" & TotalRows).Value = Range("H2:H" & TotalRows).Value
+    Range("H2:H" & TotalRows).NumberFormat = "0"
 
     'Ship To
     Range("L2:L" & TotalRows).Value = "1"

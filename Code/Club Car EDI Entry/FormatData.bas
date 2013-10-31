@@ -33,7 +33,7 @@ Sub FormatJitPiv()
     Range("C1").Value = "Qty"
 
     'Short Qty
-    Range(Cells(2, TotalCols), Cells(TotalRows, TotalCols)).NumberFormat = "#,0"
+    Range(Cells(2, TotalCols), Cells(TotalRows, TotalCols)).NumberFormat = "0"
 End Sub
 
 Sub FormatEDIOrd()
