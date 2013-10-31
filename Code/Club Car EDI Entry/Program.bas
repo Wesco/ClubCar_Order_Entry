@@ -17,6 +17,7 @@ Sub Main()
     CreateEDIOrd
     FilterEDIOrd
     FormatEDIOrd
+    ExportEDIOrd
     
     FilterRemovedItems
     ExportRemovedItems

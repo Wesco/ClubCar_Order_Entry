@@ -1,7 +1,7 @@
 Attribute VB_Name = "ExportReport"
 Option Explicit
 
-Sub ExportEDI()
+Sub ExportEDIOrd()
     Dim FileName As String
     Dim FilePath As String
     Dim CopyFilePath As String
@@ -14,7 +14,7 @@ Sub ExportEDI()
     PrevDispAlert = Application.DisplayAlerts
 
     Sheets("EDI Order").Copy
-    ActiveSheet.Name = FileName
+    ActiveSheet.Name = Range("A1").Value
 
     If Not FolderExists(CopyFilePath) Then
         RecMkDir CopyFilePath
