@@ -1,38 +1,25 @@
 Attribute VB_Name = "Program"
 Option Explicit
+Public Const VersionNumber As String = "1.0.0"
 
 Sub Main()
+    ImportGaps      '\\br3615gaps\gaps\3615 Gaps Download\
+    ImportBlanket   '\\br3615gaps\gaps\Club Car\Master\
+    ImportMaster    '\\br3615gaps\gaps\Club Car\Master\
 
     MsgBox "Please select the 'JIT Report'"
-
-    'If an error occurs while importing the JIT Report
-    'display a message describing the error and remove
-    'any data that was created at run-time
-    On Error GoTo Import_Error
-    ImportGaps
-    ImportBlanket
-    ImportMaster
-    
     UserImportFile Sheets("JIT Report").Range("A1")
-    FormatJitReport
     
+    FormatJitRep
     CreateJitPiv
     FormatJitPiv
+
+    CreateEDIOrd
+    FilterEDIOrd
+    FormatEDIOrd
     
-    
-
-    On Error GoTo 0
-
-    Exit Sub
-
-Import_Error:
-    If Err.Number = Errors.USER_INTERRUPT And Err.Source = "UserImportFile" Then
-        MsgBox "User canceled JIT import."
-    Else
-        MsgBox "Error " & Err.Number & " LN " & Erl & "(" & Err.Description & ") in procedure Clean of Module Program"
-    End If
-    Clean
-
+    FilterRemovedItems
+    ExportRemovedItems
 End Sub
 
 '---------------------------------------------------------------------------------------

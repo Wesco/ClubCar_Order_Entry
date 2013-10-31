@@ -28,6 +28,7 @@ Sub ImportMaster()
     Sheets("Master").Select
     TotalRows = ActiveSheet.UsedRange.Rows.Count
 
+    'Store part numbers as text
     Columns(1).Insert
     Range("A1").Value = "Part Number"
     With Range(Cells(2, 1), Cells(TotalRows, 1))
@@ -35,6 +36,4 @@ Sub ImportMaster()
         .Value = .Value
     End With
     Columns(2).Delete
-
 End Sub
-
