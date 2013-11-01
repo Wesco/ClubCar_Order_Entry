@@ -38,11 +38,11 @@ End Sub
 
 Sub FormatEDIOrd()
     Dim TotalRows As Long
-    
+
     '    A        B      C       D       E    F       G         H     I       J       K         L      M      N
     '    1        2      3       4       5    6       7         8     9       10      11        12     13     14
     'PO_NUMBER , Branch, DPC, CUST_LINE, QTY, UOM, UNIT_PRICE, SIM, PART_NO, DESC, SHIP_DATE, ShipTo, NOTE1, NOTE2
-    
+
     Sheets("EDI Order").Select
     TotalRows = Rows(Rows.Count).End(xlUp).Row
 
