@@ -85,7 +85,7 @@ Sub CreateEDIOrd()
 
     'PO Number
     Range("A2:A" & TotalRows).Value = "P191166-JIT-" & Format(Date, "yymmdd")
-
+    
     'Branch
     Range("B2:B" & TotalRows).Value = "3615"
 
@@ -98,8 +98,8 @@ Sub CreateEDIOrd()
 
     'SIM
     Range("H2:H" & TotalRows).Formula = "=IFERROR(VLOOKUP(I2,Master!A:B,2,FALSE),"""")"
+    Range("H2:H" & TotalRows).NumberFormat = "@"
     Range("H2:H" & TotalRows).Value = Range("H2:H" & TotalRows).Value
-    Range("H2:H" & TotalRows).NumberFormat = "0"
 
     'UOM
     Range("F2:F" & TotalRows).Formula = "=IFERROR(IF(VLOOKUP(H2,Gaps!A:AJ,36,FALSE)=0,""E"",VLOOKUP(H2,Gaps!A:AJ,36,FALSE)),""E"")"
