@@ -3,13 +3,16 @@ Option Explicit
 Public Const VersionNumber As String = "1.0.2"
 
 Sub Main()
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+
     ImportGaps      '\\br3615gaps\gaps\3615 Gaps Download\
     ImportBlanket   '\\br3615gaps\gaps\Club Car\Master\
     ImportMaster    '\\br3615gaps\gaps\Club Car\Master\
 
     MsgBox "Please select the 'JIT Report'"
     UserImportFile Sheets("JIT Report").Range("A1")
-    
+
     FormatJitRep
     CreateJitPiv
     FormatJitPiv
@@ -18,9 +21,14 @@ Sub Main()
     FilterEDIOrd
     FormatEDIOrd
     ExportEDIOrd
-    
+
     FilterRemovedItems
     ExportRemovedItems
+    MsgBox "Your PO# is " & ThisWorkbook.Sheets("EDI Order").Range("A1").Value, vbOKOnly, "PO Number"
+    Clean
+
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
 End Sub
 
 '---------------------------------------------------------------------------------------
