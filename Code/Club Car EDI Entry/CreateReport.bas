@@ -84,8 +84,8 @@ Sub CreateEDIOrd()
     Range(Cells(1, 1), Cells(1, UBound(EDIHeaders) + 1)) = EDIHeaders
 
     'PO Number
-    Range("A2:A" & TotalRows).Value = "P191166-JIT-" & Format(Date, "yymmdd")
-    
+    Range("A2:A" & TotalRows).Value = CreatePONumber()
+
     'Branch
     Range("B2:B" & TotalRows).Value = "3615"
 
@@ -113,3 +113,27 @@ Sub CreateEDIOrd()
     'Note 2
     Range("N2:N" & TotalRows).Value = "=""Qty Per Bin="" & VLOOKUP(I2,Master!A:E,5,FALSE)"
 End Sub
+
+Private Function CreatePONumber()
+    Const ABC As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    Dim FilePath As String
+    Dim PONumber As String
+    Dim modifier As String
+    Dim i As Long
+
+    FilePath = "\\7938-HP02\Shared\club car\PO's dropped into EDI\" & Format(Date, "yyyy-mm-dd") & "\"
+    PONumber = "P191166-JIT-" & Format(Date, "yymmdd")
+
+    'If the file exists add a modifier to the end of the PO number
+    Do While FileExists(FilePath & PONumber & ".csv")
+        i = i
+        If i <= 26 Then
+            modifier = "-" & Mid(ABC, i, 1)
+        Else
+            modifier = "-" & i Mod 26
+        End If
+        PONumber = "P191166-JIT-" & Format(Date, "yymmdd") & modifier
+    Loop
+    
+    CreatePONumber = PONumber
+End Function
