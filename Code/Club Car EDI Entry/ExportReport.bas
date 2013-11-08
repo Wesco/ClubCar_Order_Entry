@@ -42,29 +42,30 @@ Sub ExportRemovedItems()
     FilePath = "\\br3615gaps\gaps\Club Car\Removed Items\"
     PrevDispAlert = Application.DisplayAlerts
 
-    'Copy Removed Items to a new workbook
-    Sheets("Removed Items").Copy
-    ActiveSheet.UsedRange.Columns.AutoFit
+    If Sheets("Removed Items").Range("A2").Value <> "" Then
+        'Copy Removed Items to a new workbook
+        Sheets("Removed Items").Copy
+        ActiveSheet.UsedRange.Columns.AutoFit
 
-    'Append a modifier to the filename if the file exists
-    Do While FileExists(FilePath & FileName)
-        i = i + 1
-        FileName = "Removed Items " & Format(Date, "yyyy-mm-dd") & " (" & i & ")" & ".xlsx"
-    Loop
+        'Append a modifier to the filename if the file exists
+        Do While FileExists(FilePath & FileName)
+            i = i + 1
+            FileName = "Removed Items " & Format(Date, "yyyy-mm-dd") & " (" & i & ")" & ".xlsx"
+        Loop
 
-    'Save to the network
-    ActiveWorkbook.SaveAs FilePath & FileName, xlOpenXMLWorkbook
+        'Save to the network
+        ActiveWorkbook.SaveAs FilePath & FileName, xlOpenXMLWorkbook
 
-    'Close the Removed Items workbook
-    Application.DisplayAlerts = False
-    ActiveWorkbook.Close
-    Application.DisplayAlerts = PrevDispAlert
+        'Close the Removed Items workbook
+        Application.DisplayAlerts = False
+        ActiveWorkbook.Close
+        Application.DisplayAlerts = PrevDispAlert
 
-    'Email Removed Items
-    Email SendTo:="ataylor@wesco.com", _
-          CC:="JAbercrombie@wesco.com", _
-          Subject:="CC Removed Items", _
-          Body:="A copy of the removed items report is attached. The report can also be found on the network <a href=""" & FilePath & FileName & """>here</a>.", _
-          Attachment:=FilePath & FileName
+        'Email Removed Items
+        Email SendTo:="ataylor@wesco.com", _
+              CC:="JAbercrombie@wesco.com", _
+              Subject:="CC Removed Items", _
+              Body:="A copy of the removed items report is attached. The report can also be found on the network <a href=""" & FilePath & FileName & """>here</a>.", _
+              Attachment:=FilePath & FileName
+    End If
 End Sub
-
