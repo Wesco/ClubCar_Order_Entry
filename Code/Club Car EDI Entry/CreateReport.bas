@@ -126,11 +126,11 @@ Private Function CreatePONumber()
 
     'If the file exists add a modifier to the end of the PO number
     Do While FileExists(FilePath & PONumber & ".csv")
-        i = i
-        If i <= 26 Then
+        i = i + 1
+        If i < 27 Then
             modifier = "-" & Mid(ABC, i, 1)
         Else
-            modifier = "-" & i Mod 26
+            modifier = "-" & i - 26
         End If
         PONumber = "P191166-JIT-" & Format(Date, "yymmdd") & modifier
     Loop
