@@ -59,6 +59,8 @@ Sub ImportGaps()
 
             Sheets("Gaps").Select
             iRows = ActiveSheet.UsedRange.Rows.Count
+            
+            'Combine columns C & D to create SIM numbers
             Columns(1).EntireColumn.Insert
             Range("A1").Value = "SIM"
             Range("A2").Formula = "=C2&D2"

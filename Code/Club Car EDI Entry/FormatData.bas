@@ -32,7 +32,7 @@ Sub FormatJitPiv()
     Range("B1").Value = "Description"
     Range("C1").Value = "Qty"
 
-    'Short Qty
+    'Set number format for Qty column
     Range(Cells(2, TotalCols), Cells(TotalRows, TotalCols)).NumberFormat = "0"
 End Sub
 
