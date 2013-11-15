@@ -1,6 +1,6 @@
 Attribute VB_Name = "Program"
 Option Explicit
-Public Const VersionNumber As String = "1.0.3"
+Public Const VersionNumber As String = "1.0.4"
 
 Sub Main()
     Application.ScreenUpdating = False
