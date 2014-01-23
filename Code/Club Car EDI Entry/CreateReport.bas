@@ -132,8 +132,8 @@ Private Function CreatePONumber()
         Else
             modifier = "-" & i - 26
         End If
-        PONumber = "P191166-JIT-" & Format(Date, "yymmdd") & modifier
+        PONumber = Sheets("Master").Range("F2").Value & "-JIT-" & Format(Date, "yymmdd") & modifier
     Loop
-    
+
     CreatePONumber = PONumber
 End Function
