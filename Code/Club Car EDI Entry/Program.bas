@@ -1,6 +1,7 @@
 Attribute VB_Name = "Program"
 Option Explicit
-Public Const VersionNumber As String = "1.0.4"
+Public Const VersionNumber As String = "1.0.5"
+Public Const RepositoryName As String = "ClubCar_Order_Entry"
 
 Sub Main()
     Application.ScreenUpdating = False
