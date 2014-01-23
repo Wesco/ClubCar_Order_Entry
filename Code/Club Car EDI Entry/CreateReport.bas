@@ -122,7 +122,7 @@ Private Function CreatePONumber()
     Dim i As Long
 
     FilePath = "\\7938-HP02\Shared\club car\PO's dropped into EDI\" & Format(Date, "yyyy-mm-dd") & "\"
-    PONumber = "P191166-JIT-" & Format(Date, "yymmdd")
+    PONumber = Sheets("Master").Range("F2").Value & "-JIT-" & Format(Date, "yymmdd")
 
     'If the file exists add a modifier to the end of the PO number
     Do While FileExists(FilePath & PONumber & ".csv")
