@@ -131,7 +131,7 @@ Sub CheckForUpdates(RepoName As String, LocalVer As String)
 UPDATE_ERROR:
     If MsgBox("An error occured while checking for updates." & vbCrLf & vbCrLf & _
               "Would you like to open the website to download the latest version?", vbYesNo) = vbYes Then
-        OpenInBrowser "http://github.com/Wesco/" & RepositoryName & "/releases/"
+        ShellExecute 0, "Open", "http://github.com/Wesco/" & RepoName & "/releases/"
         If Workbooks.Count = 1 Then
             Application.Quit
         Else
