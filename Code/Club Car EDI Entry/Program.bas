@@ -25,7 +25,6 @@ Sub Main()
 
     FilterRemovedItems
     ExportRemovedItems
-    MsgBox "Your PO# is " & ThisWorkbook.Sheets("EDI Order").Range("A1").Value, vbOKOnly, "PO Number"
     Clean
 
     Application.DisplayAlerts = True

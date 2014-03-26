@@ -103,22 +103,25 @@ Sub CreateEDIOrd()
 
     'UOM
     Range("F2:F" & TotalRows).Formula = "=IFERROR(IF(VLOOKUP(H2,Gaps!A:AJ,36,FALSE)=0,""E"",VLOOKUP(H2,Gaps!A:AJ,36,FALSE)),""E"")"
+    Range("F2:F" & TotalRows).Value = Range("F2:F" & TotalRows).Value
 
     'Ship To
     Range("L2:L" & TotalRows).Value = "1"
 
     'Note 1
-    Range("M2:M" & TotalRows).Value = "=""Bin Size="" & VLOOKUP(I2,Master!A:D,4,FALSE)"
+    Range("M2:M" & TotalRows).Formula = "=""Bin Size="" & VLOOKUP(I2,Master!A:D,4,FALSE)"
+    Range("M2:M" & TotalRows).Value = Range("M2:M" & TotalRows).Value
 
     'Note 2
-    Range("N2:N" & TotalRows).Value = "=""Qty Per Bin="" & VLOOKUP(I2,Master!A:E,5,FALSE)"
+    Range("N2:N" & TotalRows).Formula = "=""Qty Per Bin="" & VLOOKUP(I2,Master!A:E,5,FALSE)"
+    Range("N2:N" & TotalRows).Value = Range("N2:N" & TotalRows).Value
 End Sub
 
 Private Function CreatePONumber()
     Const ABC As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     Dim FilePath As String
     Dim PONumber As String
-    Dim modifier As String
+    Dim Modifier As String
     Dim i As Long
 
     FilePath = "\\7938-HP02\Shared\club car\PO's dropped into EDI\" & Format(Date, "yyyy-mm-dd") & "\"
@@ -128,11 +131,11 @@ Private Function CreatePONumber()
     Do While FileExists(FilePath & PONumber & ".csv")
         i = i + 1
         If i < 27 Then
-            modifier = "-" & Mid(ABC, i, 1)
+            Modifier = "-" & Mid(ABC, i, 1)
         Else
-            modifier = "-" & i - 26
+            Modifier = "-" & i - 26
         End If
-        PONumber = Sheets("Master").Range("F2").Value & "-JIT-" & Format(Date, "yymmdd") & modifier
+        PONumber = Sheets("Master").Range("F2").Value & "-JIT-" & Format(Date, "yymmdd") & Modifier
     Loop
 
     CreatePONumber = PONumber
