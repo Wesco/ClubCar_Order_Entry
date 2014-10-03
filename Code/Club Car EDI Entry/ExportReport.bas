@@ -12,8 +12,7 @@ Sub ExportEDIOrd()
     Dim i As Long
 
     Sheets("EDI Order").Select
-    'FilePath = "\\idxexchange-new\EDI\Spreadsheet_PO\"
-    FilePath = "C:\Users\Treische\Desktop\EDI_POs\"
+    FilePath = "\\idxexchange-new\EDI\Spreadsheet_PO\"
     CopyFilePath = "\\7938-HP02\Shared\club car\PO's dropped into EDI\" & Format(Date, "yyyy-mm-dd") & "\"
     PrevDispAlert = Application.DisplayAlerts
     TotalRows = Rows(Rows.Count).End(xlUp).Row
@@ -46,7 +45,7 @@ Sub ExportEDIOrd()
 
         'Send to EDI and save a copy
         ActiveWorkbook.SaveAs FilePath & FileName, xlCSV
-        'ActiveWorkbook.SaveAs CopyFilePath & FileName, xlCSV
+        ActiveWorkbook.SaveAs CopyFilePath & FileName, xlCSV
 
         MsgBox "PO " & Range("A1").Value & " sent!", vbOKOnly, "PO Sent"
 
