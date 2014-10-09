@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ClubCar Order Entry"
-#define MyAppVersion "1.0.5"
+#define MyAppVersion "1.0.6"
 #define MyAppPublisher "Wesco Distribution, Inc."
 #define MyAppURL "http://www.github.com/wesco"
 #define MyAppExeName "Club Car EDI Entry.xlsm"
