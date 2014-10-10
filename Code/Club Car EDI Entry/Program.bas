@@ -1,6 +1,6 @@
 Attribute VB_Name = "Program"
 Option Explicit
-Public Const VersionNumber As String = "1.0.5"
+Public Const VersionNumber As String = "1.0.7"
 Public Const RepositoryName As String = "ClubCar_Order_Entry"
 
 Sub Main()
@@ -24,7 +24,7 @@ Sub Main()
     ExportEDIOrd
 
     FilterRemovedItems
-    ExportRemovedItems
+    ExportRemovedItems  'Email to ATaylor, ACoffey, RSetzer, and save to the network
     Clean
 
     Application.DisplayAlerts = True

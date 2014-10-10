@@ -46,6 +46,7 @@ Sub ExportEDIOrd()
         'Send to EDI and save a copy
         ActiveWorkbook.SaveAs FilePath & FileName, xlCSV
         ActiveWorkbook.SaveAs CopyFilePath & FileName, xlCSV
+        ActiveWorkbook.Saved = True
 
         MsgBox "PO " & Range("A1").Value & " sent!", vbOKOnly, "PO Sent"
 
@@ -92,6 +93,7 @@ Sub ExportRemovedItems()
 
         'Email Removed Items
         Email SendTo:="ataylor@wesco.com", _
+              CC:="acoffey@wesco.com; rsetzer@wesco.com", _
               Subject:="CC Removed Items", _
               Body:="A copy of the removed items report is attached. The report can also be found on the network <a href=""" & FilePath & FileName & """>here</a>.", _
               Attachment:=FilePath & FileName
@@ -123,7 +125,7 @@ Private Function CreatePONum(Sheet As Worksheet)
     CharCount = CountChar(PONumber, "-")
     j = InStr(ABC, Right(PONumber, Len(PONumber) - InStrRev(PONumber, "-")))
     i = InStr(ABC, Right(PONumber, Len(PONumber) - InStrRev(PONumber, "-"))) + ActiveWorkbook.Sheets.Count - Sheet.Index
-    
+
     If CharCount = 3 And j > 0 Then
         PONumber = Left(PONumber, InStrRev(PONumber, "-") - 1)
     End If
