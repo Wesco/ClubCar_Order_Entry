@@ -109,11 +109,11 @@ Sub CreateEDIOrd()
     Range("L2:L" & TotalRows).Value = "1"
 
     'Note 1
-    Range("M2:M" & TotalRows).Formula = "=""Bin Size="" & VLOOKUP(I2,Master!A:D,4,FALSE)"
+    Range("M2:M" & TotalRows).Formula = "=VLOOKUP(I2,Master!A:D,4,FALSE)"
     Range("M2:M" & TotalRows).Value = Range("M2:M" & TotalRows).Value
 
     'Note 2
-    Range("N2:N" & TotalRows).Formula = "=""Qty Per Bin="" & VLOOKUP(I2,Master!A:E,5,FALSE)"
+    Range("N2:N" & TotalRows).Formula = "=VLOOKUP(I2,Master!A:E,5,FALSE)"
     Range("N2:N" & TotalRows).Value = Range("N2:N" & TotalRows).Value
 End Sub
 
